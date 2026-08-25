@@ -1,0 +1,428 @@
+{{template "base" .}}
+
+{{define "main"}}
+<div class="container">
+    <h2>Confirmation #{{.ConfirmationCode}}</h2>
+
+    <hr />
+
+    <div class="row">
+      <div class="col">
+        <h3>Trips</h3>
+        {{range .PNR.Itinerary.ItinerarySlices}}
+        <div class="card">
+            <div class="card-body">
+                <h4>{{.Origin}} ✈️ {{.Destination}}</h4>
+
+                {{range .Segments}}
+                <h5><strong>{{.MarketingAirlineCode}}{{.MarketingFlightNumber}}</strong> {{.DepartureAirport}} ✈️ {{.ArrivalAirport}} <span class="badge bg-primary">{{.ActionCode}}</span></h5>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Status</strong></td>
+                            <td>{{.Status}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Scheduled Departure</strong></td>
+                            <td>{{.ScheduledDepartureDateTime}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Scheduled Arrival</strong></td>
+                            <td>{{.ScheduledArrivalDateTime}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Distance</strong></td>
+                            <td>{{.Distance}} mi</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Operating/Marketing Airline</strong></td>
+                            <td>{{.OperatingAirlineCode}}/{{.MarketingAirlineCode}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Cabin</strong></td>
+                            <td>{{.Cabin}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Class of Service</strong></td>
+                            <td>{{.ClassOfService}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Current Action Code</strong></td>
+                            <td>{{.ActionCode}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Partner PNR</strong></td>
+                            <td>{{.OtherAirlineRecordLocator}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {{end}}
+
+                <h4>Flags</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>isInternationalTrip</strong></td>
+                            <td>{{.IsInternationalTrip}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isBagCheckedIn</strong></td>
+                            <td>{{.IsBagCheckedIn}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isBagTagCreated</strong></td>
+                            <td>{{.IsBagTagCreated}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isOAInitiatedTrip</strong></td>
+                            <td>{{.IsOAInitiatedTrip}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isInSDCWindow</strong></td>
+                            <td>{{.IsInSDCWindow}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>hasScheduleChange</strong></td>
+                            <td>{{.HasScheduleChange}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>disruptionType</strong></td>
+                            <td>{{.DisruptionType}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isGoldGuestUpgradeEligible</strong></td>
+                            <td>{{.IsGoldGuestUpgradeEligible}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        {{end}}
+
+        <h3>Passengers</h3>
+        {{range .PNR.Passengers}}
+            <div class="card">
+                <div class="card-body">
+                    {{if .IsCheckedIn}}
+                    <h5>{{.FirstName}} {{.LastName}} <span class="badge bg-success">Checked In</span></h5>
+                    {{else}}
+                    <h5>{{.FirstName}} {{.LastName}} <span class="badge bg-secondary">Not Checked In</span></h5>
+                    {{end}}
+
+                    {{with .Loyalty}}
+                        <h6>Loyalty</h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>airlineCode</strong></td>
+                                    <td>{{.AirlineCode}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>airlineName</strong></td>
+                                    <td>{{.AirlineName}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>loyaltyNumber</strong></td>
+                                    <td>{{.LoyaltyNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>alaskaTierStatus</strong></td>
+                                    <td>{{.AlaskaTierStatus}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>oneWorldTierStatus</strong></td>
+                                    <td>{{.OneWorldTierStatus}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {{end}}
+    
+                    <h6>Filtered SSRs</h6>
+                    <table class="table">
+                        <tbody>
+                            {{range .SpecialServiceRequests}}
+                            <tr>
+                                <td><strong>{{.ID}} {{.ServiceCode}}</strong></td>
+                                <td>{{.VendorCode}}</td>
+                                <td>{{.FreeText}} <span class="badge bg-primary">{{.ActionCode}}</span></td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+
+                    <h6>Filtered Remarks</h6>
+                    <table class="table">
+                        <tbody>
+                            {{range .OSIs}}
+                            <tr>
+                                <td><strong>{{.ID}}</strong></td>
+                                <td>{{.FullText}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+        {{end}}
+      </div>
+      <div class="col">
+        <h3>Remarks</h3>
+        <table class="table">
+            <tbody>
+            {{range .PNR.OSIs}}
+                <tr>
+                    <td><strong>{{.ID}}</strong></td>
+                    <td>{{.FullText}}</td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+
+        <h3>Tickets</h3>
+        {{range .PNR.Tickets}}
+        <div class="card">
+            <div class="card-body">
+                <h4>{{.Number}}</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Type</strong></td>
+                            <td>{{.Type}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Designator</strong></td>
+                            <td>{{.Designator}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Issue Date</strong></td>
+                            <td>{{.SystemCreateDateTime}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Passenger</strong></td>
+                            <td>{{.FirstName}} {{.LastName}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Confirmation Code</strong></td>
+                            <td>{{.ConfirmationCode}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Active?</strong></td>
+                            <td>{{.IsActive}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Purged?</strong></td>
+                            <td>{{.IsPurged}}</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Non Refundable?</strong></td>
+                            <td>{{.HasNonRefEndorsement}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Coupons</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Flight Number</th>
+                            <th>Route</th>
+                            <th>Fare Basis</th>
+                            <th>Departure Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {{range .Coupons}}
+                        <tr>
+                            <td>{{.Index}}</td>
+                            <td>{{.MarketingFlightNumber}}</td>
+                            <td>{{.Origin}}-{{.Destination}}</td>
+                            <td>{{.FareBasis}}</td>
+                            <td>{{.DepartureDateTime}}</td>
+                            <td>{{.Status}}</td>
+                        </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+
+                <h5>Payments</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Certificate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {{range .Payments}}
+                        <tr>
+                            <td>{{.Type}}</td>
+                            <td>{{.Certificate}}</td>
+                        </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        {{end}}
+
+        <h3>Flags</h3>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td><strong>hasGuestPass</strong></td>
+                    <td>{{.PNR.HasGuestPass}}</td>
+                </tr>
+                <tr>
+                    <td><strong>hasTripInsurance</strong></td>
+                    <td>{{.PNR.HasTripInsurance}}</td>
+                </tr>
+                <tr>
+                    <td><strong>hasNoGoTicketStatus</strong></td>
+                    <td>{{.PNR.HasNoGoTicketStatus}}</td>
+                </tr>
+                <tr>
+                    <td><strong>hasGovernmentFare</strong></td>
+                    <td>{{.PNR.HasGovernmentFare}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isCompanionFare</strong></td>
+                    <td>{{.PNR.IsCompanionFare}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isEasyBiz</strong></td>
+                    <td>{{.PNR.IsEasyBiz}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isDeadHead</strong></td>
+                    <td>{{.PNR.IsDeadHead}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isAFB</strong></td>
+                    <td>{{.PNR.IsAFB}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isMinorMissingEmergencyContact</strong></td>
+                    <td>{{.PNR.IsMinorMissingEmergencyContact}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isExpediaVacationPackage</strong></td>
+                    <td>{{.PNR.IsExpediaVacationPackage}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isGroupBooking</strong></td>
+                    <td>{{.PNR.IsGroupBooking}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isLinkedReservation</strong></td>
+                    <td>{{.PNR.IsLinkedReservation}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isOptedInForFirstClassUpgrade</strong></td>
+                    <td>{{.PNR.IsOptedInForFirstClassUpgrade}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isOptedInForPremiumClassUpgrade</strong></td>
+                    <td>{{.PNR.IsOptedInForPremiumClassUpgrade}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isTicketTimeLimitSet</strong></td>
+                    <td>{{.PNR.IsTicketTimeLimitSet}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isUpgradeEligible</strong></td>
+                    <td>{{.PNR.IsUpgradeEligible}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isOnFailureQueue</strong></td>
+                    <td>{{.PNR.IsOnFailureQueue}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isOnPretendItsPurchasedQueue</strong></td>
+                    <td>{{.PNR.IsOnPretendItsPurchasedQueue}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isGoldGuestUpgradeEligible</strong></td>
+                    <td>{{.PNR.IsGoldGuestUpgradeEligible}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isDynamicWaiverEligible</strong></td>
+                    <td>{{.PNR.IsDynamicWaiverEligible}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isDirectorTravel</strong></td>
+                    <td>{{.PNR.IsDirectorTravel}}</td>
+                </tr>
+                <tr>
+                    <td><strong>isIBE</strong></td>
+                    <td>{{.PNR.IsIBE}}</td>
+                </tr>
+                <tr>
+                    <td><strong>itinerary.matchesTickets</strong></td>
+                    <td>{{.PNR.Itinerary.MatchesTickets}}</td>
+                </tr>
+                <tr>
+                    <td><strong>itinerary.isRefunded</strong></td>
+                    <td>{{.PNR.Itinerary.IsRefunded}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.hasPetc</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.HasPetc}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.hasUmnr</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.HasUmnr}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.hasAvih</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.HasAvih}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.isAllPetcPaid</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.IsAllPetcPaid}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.isAllUmnrPaid</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.IsAllUmnrPaid}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.isAllAvihPaid</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.IsAllAvihPaid}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.isUmnrOsiAddedSuccessfully</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.IsUmnrOsiAddedSuccessfully}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.isPetcOsiAddedSuccessfully</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.IsPetcOsiAddedSuccessfully}}</td>
+                </tr>
+                <tr>
+                    <td><strong>paidSsrDetails.isAvihOsiAddedSuccessfully</strong></td>
+                    <td>{{.PNR.PaidSsrDetails.IsAvihOsiAddedSuccessfully}}</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{{end}}
