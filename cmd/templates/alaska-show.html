@@ -34,6 +34,11 @@
                         </tr>
 
                         <tr>
+                            <td><strong>Equipment Name</strong></td>
+                            <td>{{.EquipmentName}}</td>
+                        </tr>
+
+                        <tr>
                             <td><strong>Distance</strong></td>
                             <td>{{.Distance}} mi</td>
                         </tr>
@@ -64,9 +69,117 @@
                         </tr>
                     </tbody>
                 </table>
+                <h6>Filtered SSRs</h6>
+                <table class="table">
+                    <tbody>
+                        {{range .SpecialServiceRequests}}
+                        <tr>
+                            <td><strong>{{.ID}} {{.ServiceCode}}</strong></td>
+                            <td>{{.VendorCode}}</td>
+                            <td>{{.FreeText}} <span class="badge bg-primary">{{.ActionCode}}</span></td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+                <h6>Segment Flags</h6>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>isCheckinEligible</strong></td>
+                            <td>{{.IsCheckinEligible}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isInSDCWindow</strong></td>
+                            <td>{{.IsInSDCWindow}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isArnk</strong></td>
+                            <td>{{.IsArnk}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isDisrupted</strong></td>
+                            <td>{{.IsDisrupted}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isFlown</strong></td>
+                            <td>{{.IsFlown}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isWaitingUpgradeFirstClass</strong></td>
+                            <td>{{.IsWaitingUpgradeFirstClass}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isWaitingUpgradePremiumClass</strong></td>
+                            <td>{{.IsWaitingUpgradePremiumClass}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isConfirmedUpgradeFirstClass</strong></td>
+                            <td>{{.IsConfirmedUpgradeFirstClass}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isConfirmedUpgradePremiumClass</strong></td>
+                            <td>{{.IsConfirmedUpgradePremiumClass}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isStandBy</strong></td>
+                            <td>{{.IsStandBy}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isNonRevConfirmed</strong></td>
+                            <td>{{.IsNonRevConfirmed}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isPetcPaid</strong></td>
+                            <td>{{.IsPetcPaid}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isUmnrPaid</strong></td>
+                            <td>{{.IsUmnrPaid}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isAvihPaid</strong></td>
+                            <td>{{.IsAvihPaid}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isInternationalFlight</strong></td>
+                            <td>{{.IsInternationalFlight}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isGoldGuestUpgradeEligible</strong></td>
+                            <td>{{.IsGoldGuestUpgradeEligible}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {{with .GguRuleViolations}}
+                <h6>GGU Rule Violations</h6>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>isSegmentNotAAG</strong></td>
+                            <td>{{.IsSegmentNotAAG}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isArnk</strong></td>
+                            <td>{{.IsArnk}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isClassOfServiceIneligibleForUpgrade</strong></td>
+                            <td>{{.IsClassOfServiceIneligibleForUpgrade}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isAlreadyFirstClass</strong></td>
+                            <td>{{.IsAlreadyFirstClass}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>isPastFlight</strong></td>
+                            <td>{{.IsPastFlight}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {{end}}
                 {{end}}
 
-                <h4>Flags</h4>
+                <h4>Trip Flags</h4>
                 <table class="table">
                     <tbody>
                         <tr>
@@ -383,6 +496,18 @@
                 <tr>
                     <td><strong>itinerary.isRefunded</strong></td>
                     <td>{{.PNR.Itinerary.IsRefunded}}</td>
+                </tr>
+                <tr>
+                    <td><strong>reservationScheduleChangeDetails.hasScheduleChange</strong></td>
+                    <td>{{.PNR.ReservationScheduleChangeDetails.HasScheduleChange}}</td>
+                </tr>
+                <tr>
+                    <td><strong>reservationScheduleChangeDetails.hasPreviousMajorScheduleChange</strong></td>
+                    <td>{{.PNR.ReservationScheduleChangeDetails.HasPreviousMajorScheduleChange}}</td>
+                </tr>
+                <tr>
+                    <td><strong>reservationScheduleChangeDetails.flightChangeQualified</strong></td>
+                    <td>{{.PNR.ReservationScheduleChangeDetails.FlightChangeQualified}}</td>
                 </tr>
                 <tr>
                     <td><strong>paidSsrDetails.hasPetc</strong></td>
